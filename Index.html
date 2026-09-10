@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea of Thieves Bounty</title>
+    <!-- Pirate & Nautical Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Pirata+One&family=Rye&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --wood-dark: #0f0b08;
+            --wood-panel: #1a120c;
+            --wood-light: #2a1f16;
+            --parchment: #d9c39d;
+            --parchment-poster: #e3caa1;
+            --parchment-dark: #b89b6a;
+            --gold: #f3c258;
+            --gold-bright: #ffe893;
+            --berry-red: #cc1111;
+            --border-bronze: #8c6239;
+            --shadow-black: rgba(0, 0, 0, 0.85);
+            --ink-black: #1a1410;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--wood-dark);
+            color: var(--parchment);
+            font-family: 'Rye', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            /* Weathered plank background pattern */
+            background-image: 
+                linear-gradient(rgba(10, 7, 5, 0.85), rgba(10, 7, 5, 0.85)),
+                repeating-linear-gradient(0deg, transparent, transparent 40px, #050403 40px, #050403 42px);
+        }
+
+        .container {
+            background-color: var(--wood-panel);
+            border: 4px solid var(--border-bronze);
+            border-radius: 4px;
+            padding: 35px 25px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 
+                0 0 0 2px #000,
+                0 15px 35px var(--shadow-black),
+                inset 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        /* Decorative Corner Elements */
+        .container::before, .container::after {
+            content: "✦";
+            position: absolute;
+            color: var(--border-bronze);
+            font-size: 1.5rem;
+        }
+        .container::before { top: 8px; left: 12px; }
+        .container::after { top: 8px; right: 12px; }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-bronze);
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Pirata One', cursive;
+            font-size: 3.5rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 3px 3px 0px #000, 0 0 10px rgba(243, 194, 88, 0.3);
+            line-height: 1;
+        }
+
+        p.subtitle {
+            color: var(--parchment);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .factions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .faction-card {
+            background: var(--wood-light);
+            border: 2px solid var(--border-bronze);
+            padding: 14px;
+            border-radius: 3px;
+            box-shadow: inset 0 0 10px #000, 2px 2px 5px var(--shadow-black);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .faction-card:hover, .faction-card:focus-within {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            color: var(--gold-bright);
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            background: #0d0906;
+            border: 1px solid var(--border-bronze);
+            color: var(--gold);
+            padding: 8px 10px;
+            font-family: 'Rye', serif;
+            font-size: 1rem;
+            border-radius: 2px;
+            outline: none;
+            box-shadow: inset 0 2px 4px #000;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--gold);
+            box-shadow: inset 0 2px 4px #000, 0 0 5px rgba(243, 194, 88, 0.5);
+        }
+
+        .max-lvl {
+            font-size: 0.75rem;
+            color: var(--parchment);
+            opacity: 0.6;
+            white-space: nowrap;
+        }
+
+        /* ========================================= */
+        /* WANTED POSTER FRAME                       */
+        /* ========================================= */
+        .wanted-poster-frame {
+            background-color: var(--parchment-poster);
+            background-image: radial-gradient(circle, transparent 40%, rgba(120, 80, 40, 0.25) 100%);
+            border: 4px dashed var(--ink-black);
+            border-radius: 4px;
+            padding: 30px 20px 25px;
+            text-align: center;
+            box-shadow: 
+                0 0 0 6px #2b1a0e,
+                0 10px 25px rgba(0,0,0,0.9),
+                inset 0 0 35px rgba(80, 50, 20, 0.4);
+            position: relative;
+            color: var(--ink-black);
+            margin-top: 10px;
+        }
+
+        /* Decorative Nails on Poster Corners */
+        .wanted-poster-frame::before, .wanted-poster-frame::after {
+            content: "•";
+            position: absolute;
+            color: #3d2b1f;
+            font-size: 2rem;
+            line-height: 0;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
+        }
+        .wanted-poster-frame::before { top: 14px; left: 14px; }
+        .wanted-poster-frame::after { top: 14px; right: 14px; }
+
+        .poster-header {
+            font-family: 'Pirata One', cursive;
+            font-size: 3rem;
+            color: var(--berry-red);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 2px;
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .poster-sub {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #4a3625;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #5a422d;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .berry-amount {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.6rem;
+            color: var(--ink-black);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+            line-height: 1.2;
+            word-break: break-word;
+            margin: 10px 0;
+        }
+
+        .berry-symbol {
+            color: var(--berry-red);
+            font-weight: bold;
+            margin-right: 6px;
+        }
+
+        .title-badge {
+            margin-top: 12px;
+            display: inline-block;
+            padding: 8px 24px;
+            border: 2px solid var(--ink-black);
+            background: #2b1c12;
+            color: var(--gold-bright);
+            font-family: 'Pirata One', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 2px #000;
+            box-shadow: 2px 3px 0px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Sea of Thieves Bounty</h1>
+            <p class="subtitle">ENTER REPUTATION LEVELS TO REVEAL THE WANTED BOUNTY</p>
+        </header>
+
+        <form id="bounty-form" onsubmit="return false;">
+            <div class="factions-grid">
+                
+                <!-- Reaper's Bones -->
+                <div class="faction-card">
+                    <label for="reapers">Reaper's Bones</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="reapers" min="0" max="500" value="0" placeholder="0">
+                        <span class="max-lvl">/ 500</span>
+                    </div>
+                </div>
+
+                <!-- Sea Dogs -->
+                <div class="faction-card">
+                    <label for="sea-dogs">Sea Dogs (Legacy)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="sea-dogs" min="0" max="50" value="0" placeholder="0">
+                        <span class="max-lvl">/ 50</span>
+                    </div>
+                </div>
+
+                <!-- Order of Souls -->
+                <div class="faction-card">
+                    <label for="order">Order of Souls</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="order" min="0" max="500" value="0" placeholder="0">
+                        <span class="max-lvl">/ 500</span>
+                    </div>
+                </div>
+
+                <!-- The Hunter's Call -->
+                <div class="faction-card">
+                    <label for="hunters">The Hunter's Call</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="hunters" min="0" max="50" value="0" placeholder="0">
+                        <span class="max-lvl">/ 50</span>
+                    </div>
+                </div>
+
+                <!-- Athena's Fortune -->
+                <div class="faction-card">
+                    <label for="athena">Athena's Fortune</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="athena" min="0" max="500" value="0" placeholder="0">
+                        <span class="max-lvl">/ 500</span>
+                    </div>
+                </div>
+
+                <!-- Gold Hoarders -->
+                <div class="faction-card">
+                    <label for="gold-hoarders">Gold Hoarders</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="gold-hoarders" min="0" max="500" value="0" placeholder="0">
+                        <span class="max-lvl">/ 500</span>
+                    </div>
+                </div>
+
+                <!-- Merchant Alliance -->
+                <div class="faction-card">
+                    <label for="merchants">Merchant Alliance</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="merchants" min="0" max="500" value="0" placeholder="0">
+                        <span class="max-lvl">/ 500</span>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        <!-- Wanted Poster Container -->
+        <div class="wanted-poster-frame">
+            <div class="poster-header">WANTED</div>
+            <div class="poster-sub">DEAD OR ALIVE</div>
+            <div class="berry-amount">
+                <span class="berry-symbol">฿</span><span id="total-bounty">0</span>
+            </div>
+            <div>
+                <div class="title-badge" id="bounty-title">Rookie</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('input[type="number"]');
+        const bountyDisplay = document.getElementById('total-bounty');
+        const titleDisplay = document.getElementById('bounty-title');
+
+        const weights = {
+            'reapers': 2700000000,
+            'sea-dogs': 2700000000,
+            'order': 2100000000,
+            'hunters': 1500000000,
+            'athena': 1300000000,
+            'gold-hoarders': 1000000000,
+            'merchants': 700000000
+        };
+
+        const BASE_BOUNTY = 10000000;
+
+        function getTitle(bounty) {
+            if (bounty < 50000000) return "Rookie";
+            if (bounty < 150000000) return "Top Rookie";
+            if (bounty < 300000000) return "Supernova";
+            if (bounty < 500000000) return "Executive";
+            if (bounty < 1000000000) return "Commander";
+            if (bounty < 2000000000) return "Top Commander";
+            if (bounty < 3500000000) return "Admiral";
+            if (bounty < 5000000000) return "Yonko";
+            if (bounty < 8000000000) return "Pirate King";
+            return "God";
+        }
+
+        function calculateBounty() {
+            let totalBountyFromLevels = 0;
+            let activeInputs = false;
+
+            inputs.forEach(input => {
+                let val = parseInt(input.value) || 0;
+                const max = parseInt(input.getAttribute('max')) || 1;
+
+                if (val > max) {
+                    val = max;
+                    input.value = max;
+                }
+                if (val < 0) {
+                    val = 0;
+                    input.value = 0;
+                }
+
+                if (val > 0) {
+                    activeInputs = true;
+                }
+
+                const ratio = val / max;
+                const expFactor = Math.pow(ratio, 2.0);
+
+                const factionWeight = weights[input.id] || 0;
+                totalBountyFromLevels += expFactor * factionWeight;
+            });
+
+            let finalBounty = 0;
+            if (activeInputs) {
+                finalBounty = BASE_BOUNTY + totalBountyFromLevels;
+            }
+
+            const bountyValue = Math.floor(finalBounty);
+            bountyDisplay.innerText = bountyValue.toLocaleString();
+            titleDisplay.innerText = getTitle(bountyValue);
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateBounty);
+        });
+
+        calculateBounty();
+    </script>
+</body>
+</html>
